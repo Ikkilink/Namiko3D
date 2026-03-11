@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class playerAnimationManager : MonoBehaviour
+{
+    public Animator animator;
+    public bool isFacingRight = true;
+    public GameObject playerGameObject;
+    public InputHandler inputHandler;
+    public AttackManager attackManager;
+
+    public int counter = 0;
+
+    void OnEnable()
+    {
+        inputHandler.moving += moveAnimation;
+    }
+
+    void OnDisable()
+    {
+        inputHandler.moving -= moveAnimation;
+    }
+
+    private void moveAnimation()
+    {
+        if(inputHandler.moveValX > 0 || inputHandler.moveValY>0 ||inputHandler.moveValX < 0 || inputHandler.moveValY<0)
+        {
+            animator.SetBool("isWalking", true);
+        }
+    }
+
+    void Update()
+    {
+        if (inputHandler.moveValX == 0 && inputHandler.moveValY == 0)
+        {
+            animator.SetBool("isWalking", false);
+        }
+        attackAnimation(attackManager.attackPhase);
+    }
+
+    public void attackAnimation(int phase)
+    {
+        switch (phase)
+        {
+            case 1:
+                animator.SetTrigger("Punch");
+                Debug.Log("Should be punching");
+                break;
+            case 2:
+                animator.SetTrigger("Kick");
+                Debug.Log("Should be Kicking");
+                break;
+            case 3:
+                animator.SetTrigger("Magic");
+                Debug.Log("Should be Magic");
+                break;
+            default:
+                break;
+        }
+    }
+
+
+}
